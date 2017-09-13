@@ -53,34 +53,63 @@ app.get("/login", (req, res) => {
   res.render('login');
 })
 
-// submit username - post
+// login email & password - post
 app.post("/login", (req, res) => {
-  const username = 'username';
-  res.cookie(username, req.body.username);
+  if (!isEmailStored(req.body.email) ||
+    !isPasswordStored(req.body.pasword)) {
+    res.sendStatus(400);
+    return;
+  }
+
+  res.cookie(user_id, req.body.id);
   res.redirect('/urls');
+
   // res.redirect('Ok');
 });
 
-
 // logout
 app.post("/logout", (req, res) => {
-  res.clearCookie('username')
+  res.clearCookie('user_id')
   res.redirect('/urls');
 });
+
+
+function isEmailUnique(emailValue) {
+  for (var keys in users) {
+    if( users[keys].email === emailValue ) {
+      return true;
+    }
+  }
+}
+
+function isEmailStored(emailValue) {
+  for (var keys in users) {
+    if (users[keys].email === emailValue ) {
+      return true;
+    }
+  }
+}
+
+function isPasswordStored(passwordValue) {
+  for (var keys in users) {
+    if (users[keys].password === passwordValue ) {
+      return true;
+    }
+  }
+}
 
 
 // submit registration info
 app.post("/register", (req, res) => {
   let emailValue = req.body.email;
 
-  if (emailValue === '' || req.body.password === '') {
+  if (!emailValue || !req.body.password) {
     res.sendStatus(400);
+    return;
+  } else if (isEmailUnique(emailValue)) {
+    res.sendStatus(400);
+    return;
   }
-  for (var keys in users) {
-    if( users[keys].email === emailValue ) {
-      res.sendStatus(400); }
-  }
-
   let id = generateRandomString();
   users[id] = {id: id,
                email: req.body.email,
@@ -93,14 +122,12 @@ app.post("/register", (req, res) => {
 
 // get registration page
 app.get("/register", (req, res) => {
-  let templateVars =  { username: req.cookies["username"] }
-  res.render('register', templateVars);
+  res.render('register');
 })
 
 // Get page for new link
 app.get("/urls/new", (req, res) => {
-  let templateVars =  { username: req.cookies["username"] }
-  res.render("urls_new", templateVars);
+  res.render("urls_new");
 })
 
 // welcome root page
@@ -111,9 +138,8 @@ app.get("/", (req, res) => {
 
 // get index page
 app.get("/urls", (req, res) => {
-  let templateVars = { urls: urlDatabase,
-                    username: req.cookies["username"] };
-  res.render("urls_index", templateVars);
+  let templateVars = { urls: urlDatabase};
+  res.render("urls_index");
 });
 
 // update a link on index page
@@ -133,8 +159,7 @@ app.post("/urls/:id/delete/", (req, res) => {
 // show an individual page by its id
 app.get("/urls/:id/", (req, res) => {
   let templateVars = { shortURL: req.params.id,
-                      fullURL: urlDatabase[req.params.id],
-                      username: req.cookies["username"] };
+                      fullURL: urlDatabase[req.params.id] };
   res.render("urls_show", templateVars);
 });
 
