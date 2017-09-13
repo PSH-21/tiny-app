@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <title>TinyApp</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 </head>
 <body>
     <!-- Add your EJS code here -->
@@ -13,10 +14,14 @@
     <ul>
       <% Object.keys(urls).forEach(function(key) { %>
 
-        <li> <%= urls[key] %> - <%= key %>
+        <li>
 
-          <form method="POST" action="<%=`/urls/${key}/delete`%>">
-          <INPUT TYPE="SUBMIT" NAME="button" Value="Delete"/>
+          <%= key %> --> <%= urls[key] %>
+
+          <a href="/urls/<%=key%>" style="padding-left:15px; padding-right:15px">Edit</a>
+
+          <form method="POST" action="<%=`/urls/${key}/delete`%>" style="display:inline">
+          <INPUT TYPE="SUBMIT" NAME="button" Value="Delete" class="btn btn-primary"/>
           </form>
 
         </li>

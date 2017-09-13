@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <title>TinyApp</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 </head>
 <body>
     <!-- Add your EJS code here -->
@@ -10,8 +11,12 @@
         <% include ./partials/_header %>
     </header>
 
-    <ul>
-    <li> <%=shortURL %>, <%= fullURL %></li>
-    </ul>
+
+    <h5>ShortURL: <%=shortURL %></h5>
+    <form method="POST" action="<%=`/urls/${shortURL}/`%>">
+          <INPUT TYPE="text" name="newName" value="<%=fullURL %>" size=40/>
+          <INPUT TYPE="SUBMIT" NAME="button" Value="Update"/>
+    </form>
+
 </body>
 </html>

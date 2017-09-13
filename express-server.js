@@ -44,30 +44,42 @@ app.get("/urls", (req, res) => {
   res.render("urls_index", templateVars);
 });
 
-app.post("/urls", (req, res) => {
+app.post("/urls/", (req, res) => {
   let shortURL = generateRandomString(req.body.longURL);  // debug statement to see POST parameters
   urlDatabase[shortURL] = req.body.longURL;
-  //res.send("Ok");
-  console.log(urlDatabase)
-  res.redirect(`/urls/${shortURL}`);         // Respond with 'Ok' (we will replace this)
+  res.redirect(`urls/${shortURL}`);         // Respond with 'Ok' (we will replace this)
 });
 
-app.get("/u/:shortURL", (req, res) => {
-  let longURL = urlDatabase[req.params.shortURL];
-  res.redirect(longURL);
-});
+// app.get("/u/:shortURL/", (req, res) => {
+//   let longURL = urlDatabase[req.params.shortURL];
+//   res.redirect(longURL);
+// });
 
-app.post("/urls/:id/delete", (req, res) => {
+app.post("/urls/:id/delete/", (req, res) => {
   delete urlDatabase[req.params.id];
-  res.redirect('/urls');         // Respond with 'Ok' (we will replace this)
+  res.redirect('urls');         // Respond with 'Ok' (we will replace this)
 });
 
-app.get("/urls/:id", (req, res) => {
+app.get("/urls/:id/", (req, res) => {
   //let refLink = req.params.id.substr(1);
   let templateVars = { shortURL: req.params.id,
                       fullURL: urlDatabase[req.params.id] };
   res.render("urls_show", templateVars);
 });
+
+
+app.post("/urls/:id/", (req, res) => {
+  urlDatabase[req.params.id] = req.body.newName;
+  console.log(req.body.newName);
+  console.log(urlDatabase)
+
+  // let templateVars = { shortURL: req.params.id,
+  //                     fullURL: urlDatabase[req.params.id] };
+  res.render("/urls");
+});
+
+
+
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
