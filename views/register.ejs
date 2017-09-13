@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>TinyApp</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+</head>
+<body>
+    <!-- Add your EJS code here -->
+
+    <header>
+        <% include ./partials/_header %>
+    </header>
+
+      <form method="POST" action="/register" style="display:inline">
+          <INPUT TYPE="EMAIL" NAME="email" />
+          <INPUT TYPE="PASSWORD" NAME="password"/>
+          <INPUT TYPE="SUBMIT" NAME="button" Value="Submit" class="btn btn-primary"/>
+      </form>
+</body>
+</html>

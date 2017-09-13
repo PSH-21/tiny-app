@@ -38,11 +38,22 @@ app.post("/logout", (req, res) => {
 });
 
 
+// submit registration info
+app.post("/register/", (req, res) => {
+  res.redirect('/urls');
+})
+
+// get registration page
+app.get("/register", (req, res) => {
+  let templateVars =  { username: req.cookies["username"] }
+  res.render('register', templateVars);
+})
+
 // Get page for new link
 app.get("/urls/new", (req, res) => {
   let templateVars =  { username: req.cookies["username"] }
   res.render("urls_new", templateVars);
-});
+})
 
 // welcome root page
 app.get("/", (req, res) => {
