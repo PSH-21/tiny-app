@@ -37,6 +37,22 @@ function generateRandomString() {
   return text;
 }
 
+// dissipate cookie information to other pages
+app.use(function (req, res, next) {
+  const userID = req.cookies['user_id'];
+  res.locals = {
+    urlDatabase: urlDatabase,
+    user: users[userID]
+  };
+  next();
+});
+
+
+// get login page
+app.get("/login", (req, res) => {
+  res.render('login');
+})
+
 // submit username - post
 app.post("/login", (req, res) => {
   const username = 'username';
@@ -45,6 +61,8 @@ app.post("/login", (req, res) => {
   // res.redirect('Ok');
 });
 
+
+// logout
 app.post("/logout", (req, res) => {
   res.clearCookie('username')
   res.redirect('/urls');
@@ -52,7 +70,7 @@ app.post("/logout", (req, res) => {
 
 
 // submit registration info
-app.post("/register/", (req, res) => {
+app.post("/register", (req, res) => {
   let emailValue = req.body.email;
 
   if (emailValue === '' || req.body.password === '') {
@@ -68,9 +86,10 @@ app.post("/register/", (req, res) => {
                email: req.body.email,
               password: req.body.password}
   res.cookie('user_id', id);
-  //console.log(req.body);
   res.redirect('/urls');
 })
+
+
 
 // get registration page
 app.get("/register", (req, res) => {

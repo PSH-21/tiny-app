@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>TinyApp</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+</head>
+<body>
+    <!-- Add your EJS code here -->
+
+    <header>
+        <% include ./partials/_header %>
+    </header>
+
+    <% if (user){ %>
+    <form method="POST" action="/logout" style="display:inline">
+      <INPUT TYPE="SUBMIT" NAME="button"  Value="Logout"/>
+    </form>
+    <% } else { %>
+    <form method="POST" action="/login">
+      <INPUT type="text" name="email">
+      <INPUT type="text" name="password">
+      <INPUT TYPE="SUBMIT" NAME="button" Value="Submit"/>
+    </form>
+  <% } %>
+
+</body>
+</html>
