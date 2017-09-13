@@ -53,12 +53,21 @@ app.post("/logout", (req, res) => {
 
 // submit registration info
 app.post("/register/", (req, res) => {
+  let emailValue = req.body.email;
+
+  if (emailValue === '' || req.body.password === '') {
+    res.sendStatus(400);
+  }
+  for (var keys in users) {
+    if( users[keys].email === emailValue ) {
+      res.sendStatus(400); }
+  }
+
   let id = generateRandomString();
   users[id] = {id: id,
                email: req.body.email,
               password: req.body.password}
   res.cookie('user_id', id);
-  console.log(users);
   //console.log(req.body);
   res.redirect('/urls');
 })
