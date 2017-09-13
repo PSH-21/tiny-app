@@ -32,6 +32,10 @@ app.post("/login", (req, res) => {
   // res.redirect('Ok');
 });
 
+app.post("/logout", (req, res) => {
+  res.clearCookie('username')
+  res.redirect('/urls');
+});
 
 
 // Get page for new link
