@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>TinyApp</title>
+</head>
+<body>
+    <!-- Add your EJS code here -->
+
+    <header>
+        <% include ./partials/_header %>
+    </header>
+
+    <ul>
+      <% Object.keys(urls).forEach(function(key) { %>
+
+        <li> <%= urls[key] %> - <%= key %>
+
+          <form method="POST" action="<%=`/urls/${key}/delete`%>">
+          <INPUT TYPE="SUBMIT" NAME="button" Value="Delete"/>
+          </form>
+
+        </li>
+
+      <% });%>
+
+    </ul>
+
+    <a href=#>Shorten a Link Here</a>
+</body>
+</html>
