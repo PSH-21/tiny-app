@@ -13,11 +13,12 @@
     </header>
 
     <ul>
-      <% Object.keys(urls).forEach(function(key) { %>
+
+      <% Object.keys(abbLinks).forEach(function(key) { %>
 
         <li>
 
-          <%= key %> --> <%= urls[key] %>
+          <%= key %> --> <%= abbLinks[key] %>
 
           <a href="/urls/<%=key%>" style="padding-left:15px; padding-right:15px">Edit</a>
 

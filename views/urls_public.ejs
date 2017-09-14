@@ -8,18 +8,20 @@
     <!-- Add your EJS code here -->
 
     <header>
-        <% include ./partials/_header %>
+      <% include ./partials/_header %>
     </header>
 
- <% if (user){ %>
-          yes
-    <% } else { %>
-    <form method="POST" action="/login">
-      <INPUT type="text" name="email">
-      <INPUT type="text" name="password">
-      <INPUT TYPE="SUBMIT" NAME="button" Value="Submit"/>
-    </form>
-  <% } %>
+    <ul style="list-style: none">
+
+      <% Object.keys(urls).forEach(function(key) { %>
+
+        <li>
+          <%= key %> --> <%= urls[key] %>
+        </li>
+
+      <% });%>
+
+    </ul>
 
 </body>
 </html>
