@@ -1,7 +1,8 @@
 const express = require("express");
 const app = express();
 const PORT = process.env.PORT || 8080; // default port 8080
-var cookieParser = require('cookie-parser')
+const cookieParser = require('cookie-parser')
+const bcrypt = require('bcrypt');
 
 app.set("view engine", "ejs")
 const bodyParser = require("body-parser");
@@ -57,16 +58,16 @@ app.get("/login", (req, res) => {
 
 // login email & password - post
 app.post("/login", (req, res) => {
-  if (isEmailStored(req.body.email) && isPasswordStored(req.body.password)){
-    for (var i in users) {
-      if (users[i].email === req.body.email) {
-        res.cookie("user_id", users[i]['id']);
-        res.redirect('/urls');
+  for (let id in users) {
+    if (users[id].email === req.body.email) {
+      if (bcrypt.compareSync(req.body.password, users[id].password)) {
+        res.cookie("user_id", users[id]['id']);
+        res.redirect('/urls')
+        return;
       }
     }
-  } else {
-    res.sendStatus(400);
   }
+  res.sendStatus(400);
 });
 
 // logout
@@ -114,9 +115,11 @@ app.post("/register", (req, res) => {
     return;
   }
   let id = generateRandomString();
+  const hashedPassword = bcrypt.hashSync(req.body.password, 10);
+  console.log(hashedPassword);
   users[id] = {id: id,
                email: req.body.email,
-              password: req.body.password}
+              password: hashedPassword}
   res.cookie('user_id', id);
   res.redirect('/urls');
 })
@@ -129,7 +132,7 @@ app.get("/register", (req, res) => {
 })
 
 // public index page
-app.get("/urls/public", (req, res) => {
+app.get("/u", (req, res) => {
   let templateVars = { urls : urlDatabase }
   res.render("urls_public", templateVars);
 });
@@ -157,10 +160,14 @@ app.get("/urls", (req, res) => {
   }
   let userId = req.cookies['user_id'];
   let links = users[userId]['shortLinks'];
-  let abbLinks = links.reduce( (result, link) => {
+  if (links === null || links === undefined ) {
+    var abbLinks = {};
+  } else {
+     var abbLinks = links.reduce( (result, link) => {
     result[link] = urlDatabase[link];
     return result;
-  }, {});
+    }, {});
+  }
   // let templateVars = { links: urlDatabase,
   //                     };
   res.render("urls_index", {abbLinks});
@@ -197,11 +204,11 @@ app.post("/urls/:id/", (req, res) => {
   urlDatabase[req.params.id] = req.body.newName;
   let templateVars = { shortURL: req.params.id,
                        fullURL: urlDatabase[req.params.id] };
-  res.render("/urls");
+  res.redirect("/urls");
 });
 
 
-//example using shortURL instead of id
+// redirect - link
 app.get("/u/:shortURL/", (req, res) => {
   let longURL = urlDatabase[req.params.shortURL];
   res.redirect(longURL);

@@ -15,8 +15,14 @@
 
       <% Object.keys(urls).forEach(function(key) { %>
 
-        <li>
-          <%= key %> --> <%= urls[key] %>
+        <table>
+          <tr>
+            <td><%= key %></td>
+            <td>--> <%= urls[key] %> </td>
+            <td><a href="<%= urls[key] %>" class="btn btn-info" style="width:170px">https://u/<%=key%></a></td>
+          </tr>
+        </table>
+
         </li>
 
       <% });%>
