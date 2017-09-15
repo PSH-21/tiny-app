@@ -1,13 +1,16 @@
 const express = require("express");
 const app = express();
 const PORT = process.env.PORT || 8080; // default port 8080
-const cookieParser = require('cookie-parser')
+const cookieSession = require('cookie-session')
 const bcrypt = require('bcrypt');
 
 app.set("view engine", "ejs")
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({extended: true}));
-app.use(cookieParser());
+app.use(cookieSession({
+  name: 'session',
+  keys: ['key1', 'key2']
+}))
 
 let urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
@@ -42,7 +45,7 @@ function generateRandomString() {
 
 // dissipate cookie information to other pages
 app.use(function (req, res, next) {
-  const userID = req.cookies['user_id'];
+  const userID = req.session['user_id'];
   res.locals = {
     urlDatabase: urlDatabase,
     user: users[userID]
@@ -61,7 +64,7 @@ app.post("/login", (req, res) => {
   for (let id in users) {
     if (users[id].email === req.body.email) {
       if (bcrypt.compareSync(req.body.password, users[id].password)) {
-        res.cookie("user_id", users[id]['id']);
+        req.session.user_id = users[id]['id'];
         res.redirect('/urls')
         return;
       }
@@ -72,7 +75,7 @@ app.post("/login", (req, res) => {
 
 // logout
 app.post("/logout", (req, res) => {
-  res.clearCookie('user_id')
+  req.session = null;
   res.redirect('/login');
 });
 
@@ -120,7 +123,7 @@ app.post("/register", (req, res) => {
   users[id] = {id: id,
                email: req.body.email,
               password: hashedPassword}
-  res.cookie('user_id', id);
+  req.session.user_id = id;
   res.redirect('/urls');
 })
 
@@ -139,7 +142,7 @@ app.get("/u", (req, res) => {
 
 // Get page for new link
 app.get("/urls/new", (req, res) => {
-  if (!req.cookies['user_id']) {
+  if (!req.session['user_id']) {
     res.redirect('/login');
     return;
   }
@@ -154,11 +157,11 @@ app.get("/", (req, res) => {
 
 // get index page
 app.get("/urls", (req, res) => {
-  if (!req.cookies['user_id']) {
+  if (!req.session['user_id']) {
     res.redirect('/login')
     return;
   }
-  let userId = req.cookies['user_id'];
+  let userId = req.session['user_id'];
   let links = users[userId]['shortLinks'];
   if (links === null || links === undefined ) {
     var abbLinks = {};
@@ -177,7 +180,7 @@ app.get("/urls", (req, res) => {
 app.post("/urls", (req, res) => {
   let shortURL = generateRandomString(req.body.longURL);  // debug statement to see POST parameters
   urlDatabase[shortURL] = req.body.longURL;
-  let userID = req.cookies['user_id'];
+  let userID = req.session['user_id'];
   users[userID].shortLinks.push(shortURL);
   res.redirect(`urls/${shortURL}`);
 });
@@ -185,7 +188,7 @@ app.post("/urls", (req, res) => {
 
 // delete short-link
 app.post("/urls/:id/delete", (req, res) => {
-  let userID = req.cookies['user_id'];
+  let userID = req.session['user_id'];
   let linkIndex = users[userID].shortLinks.indexOf(req.params.id);
   delete users[userID].shortLinks[linkIndex];
   delete urlDatabase[req.params.id];
