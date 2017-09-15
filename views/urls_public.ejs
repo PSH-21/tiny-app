@@ -17,16 +17,14 @@
           <tr>
             <th>Code</th>
             <th>Destination Address</th>
-            <th>Full Path</th>
-            <th>Example Link</th>
+            <th>Active Example</th>
           </tr>
 
           <% Object.keys(urls).forEach(function(key) { %>
           <tr>
-            <td style="width:120px"><%= key %></td>
+            <td style="width:120px">u/<%= key %></td>
             <td style="width:300px"><%= urls[key] %> </td>
-            <td style="width:160px">https://u/<%=key%></td>
-            <td style="width:160px"><a href="<%= urls[key] %>" class="btn btn-info" style="width:170px">https://u/<%=key%></a></td>
+            <td style="width:160px"><a href="<%= urls[key] %>" class="btn btn-info" style="width:170px">/u/<%=key%></a></td>
           </tr>
            <% });%>
         </table>

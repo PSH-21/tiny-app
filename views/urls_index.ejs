@@ -12,27 +12,21 @@
 
     </header>
 
-    <ul>
-
-
-
          <table>
           <tr>
             <th>Code</th>
             <th>Destination Address</th>
             <th>Edit</th>
-            <th>Full Path</th>
-            <th>Example Link</th>
+            <th>Active Link</th>
             <th>Delete</th>
           </tr>
 
           <% Object.keys(abbLinks).forEach(function(key) { %>
           <tr>
-            <td style="width:120px"><%= key %></td>
+            <td style="width:120px">u/<%= key %></td>
             <td style="width:300px"><%= abbLinks[key] %> </td>
             <td style="width:80px"><a href="/urls/<%=key%>" >Edit</a>
-            <td style="width:160px">https://u/<%=key%></td>
-            <td style="width:200px"><a href="<%= abbLinks[key] %>" class="btn btn-info" style="width:170px">https://u/<%=key%></a></td>
+            <td style="width:200px"><a href="/u/<%=key%>" class="btn btn-info" style="width:170px">u/<%=key%></a></td>
             <td style="width:80px">
               <form method="POST" action="<%=`/urls/${key}/delete`%>" style="display:inline">
               <INPUT TYPE="SUBMIT" NAME="button" Value="Delete" class="btn btn-danger"/>

@@ -14,9 +14,7 @@ app.use(cookieSession({
 
 let urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
-  "9sm5xK": "http://www.google.com",
-  "asdfas": 'y',
-  "asdfasd": 'n'
+  "9sm5xK": "http://www.google.com"
 };
 
 let users = {
@@ -24,7 +22,7 @@ let users = {
     id: "YYu123",
     email: "user@example.com",
     password: "purple-monkey-dinosaur",
-    shortLinks: ["b2xVn2",'asdfas','asdfasd']
+    shortLinks: ["b2xVn2"]
   },
  "ABC123": {
     id: "ABC123",
