@@ -34,14 +34,7 @@ let users = {
   }
 }
 
-function generateRandomString() {
-  let text = "";
-  let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  for (var i = 0; i < 6; i++) {
-    text += possible.charAt(Math.floor(Math.random() * possible.length));
-  }
-  return text;
-}
+
 
 // dissipate cookie information to other pages
 app.use(function (req, res, next) {
@@ -79,6 +72,14 @@ app.post("/logout", (req, res) => {
   res.redirect('/login');
 });
 
+function generateRandomString() {
+  let text = "";
+  let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  for (var i = 0; i < 6; i++) {
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+  }
+  return text;
+}
 
 function isEmailUnique(emailValue) {
   for (var keys in users) {
@@ -122,7 +123,8 @@ app.post("/register", (req, res) => {
   console.log(hashedPassword);
   users[id] = {id: id,
                email: req.body.email,
-              password: hashedPassword}
+              password: hashedPassword,
+              shortLinks: []}
   req.session.user_id = id;
   res.redirect('/urls');
 })
@@ -135,7 +137,7 @@ app.get("/register", (req, res) => {
 })
 
 // public index page
-app.get("/u", (req, res) => {
+app.get("/public", (req, res) => {
   let templateVars = { urls : urlDatabase }
   res.render("urls_public", templateVars);
 });
@@ -151,7 +153,7 @@ app.get("/urls/new", (req, res) => {
 
 // welcome root page
 app.get("/", (req, res) => {
-  res.end("Hello!");
+  res.render("home");
 });
 
 
@@ -181,8 +183,8 @@ app.post("/urls", (req, res) => {
   let shortURL = generateRandomString(req.body.longURL);  // debug statement to see POST parameters
   urlDatabase[shortURL] = req.body.longURL;
   let userID = req.session['user_id'];
-  users[userID].shortLinks.push(shortURL);
-  res.redirect(`urls/${shortURL}`);
+  users[userID]['shortLinks'].push(shortURL);
+  res.redirect(`urls/`);
 });
 
 
@@ -197,6 +199,10 @@ app.post("/urls/:id/delete", (req, res) => {
 
 // show an individual page by its id  (edit)
 app.get("/urls/:id", (req, res) => {
+   if (!req.session['user_id']) {
+    res.redirect('/login')
+    return;
+  }
   let templateVars = { shortURL: req.params.id,
                       fullURL: urlDatabase[req.params.id] };
   res.render("urls_show", templateVars);

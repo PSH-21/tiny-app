@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <title>TinyApp</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <% include ./partials/_head %>
 </head>
 <body>
     <!-- Add your EJS code here -->
@@ -10,16 +10,19 @@
     <header>
         <% include ./partials/_header %>
     </header>
+<div align="center" style="padding-top: 100px" >
 
  <% if (user){ %>
-          yes
+          <h1 align="center" style="padding-top: 100px"> You are logged in! </h1>
     <% } else { %>
-    <form method="POST" action="/login">
-      <INPUT type="text" name="email">
-      <INPUT type="text" name="password">
-      <INPUT TYPE="SUBMIT" NAME="button" Value="Submit"/>
+    <h4 style="display:inline; padding-right: 20px">Login</h4>
+    <form method="POST" action="/login" style="display:inline">
+      <INPUT type="text" name="email" placeholder="email">
+      <INPUT type="text" name="password" placeholder="password">
+      <INPUT TYPE="SUBMIT" NAME="button" Value="Submit" class="btn btn-primary"/>
     </form>
   <% } %>
+</div>
 
 </body>
 </html>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <title>TinyApp</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+  <% include ./partials/_head %>
 </head>
 <body>
     <!-- Add your EJS code here -->
@@ -14,24 +14,34 @@
 
     <ul>
 
-      <% Object.keys(abbLinks).forEach(function(key) { %>
 
-        <li>
 
-          <%= key %> --> <%= abbLinks[key] %>
+         <table>
+          <tr>
+            <th>Code</th>
+            <th>Destination Address</th>
+            <th>Edit</th>
+            <th>Full Path</th>
+            <th>Example Link</th>
+            <th>Delete</th>
+          </tr>
 
-          <a href="/urls/<%=key%>" style="padding-left:15px; padding-right:15px">Edit</a>
+          <% Object.keys(abbLinks).forEach(function(key) { %>
+          <tr>
+            <td style="width:120px"><%= key %></td>
+            <td style="width:300px"><%= abbLinks[key] %> </td>
+            <td style="width:80px"><a href="/urls/<%=key%>" >Edit</a>
+            <td style="width:160px">https://u/<%=key%></td>
+            <td style="width:200px"><a href="<%= abbLinks[key] %>" class="btn btn-info" style="width:170px">https://u/<%=key%></a></td>
+            <td style="width:80px">
+              <form method="POST" action="<%=`/urls/${key}/delete`%>" style="display:inline">
+              <INPUT TYPE="SUBMIT" NAME="button" Value="Delete" class="btn btn-danger"/>
+              </form></a>
+            </td>
+          </tr>
+           <% });%>
+        </table>
 
-          <form method="POST" action="<%=`/urls/${key}/delete`%>" style="display:inline">
-          <INPUT TYPE="SUBMIT" NAME="button" Value="Delete" class="btn btn-primary"/>
-          </form>
 
-        </li>
-
-      <% });%>
-
-    </ul>
-
-    <a href="/urls/new/">Shorten a Link Here</a>
 </body>
 </html>

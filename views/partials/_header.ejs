@@ -1,13 +1,16 @@
 <h3> TinyApp </h3>
 
+
 <% if (user){ %>
+    <a href="/urls">Personal Links</a> | <a href="/urls/new">New Link</a> | <a href="/public"> Public Index</a>
+
     <form method="POST" action="/logout" style="display:inline">
       <INPUT TYPE="SUBMIT" NAME="button"  Value="Logout"/>
     </form>
   <% } else { %>
-    <a href="/login">Login</a> | <a href="/register">Register</a> |
+    <a href="/login">Login</a> | <a href="/register">Register</a> | <a href="/public"> Public Index</a>
    <% } %>
-   <a href="/u"> Public Index</a>
+
 
 
 
