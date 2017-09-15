@@ -21,7 +21,7 @@ let users = {
   "YYu123": {
     id: "YYu123",
     email: "user@example.com",
-    password: "purple-monkey-dinosaur",
+    password: "asdf",
     shortLinks: ["b2xVn2"]
   },
  "ABC123": {
@@ -118,7 +118,6 @@ app.post("/register", (req, res) => {
   }
   let id = generateRandomString();
   const hashedPassword = bcrypt.hashSync(req.body.password, 10);
-  console.log(hashedPassword);
   users[id] = {id: id,
                email: req.body.email,
               password: hashedPassword,
